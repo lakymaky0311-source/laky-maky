@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="hr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Laky & Maky – personalizirani pokloni, 3D print, dekoracije i kreativne usluge.">
+    <title>Laky & Maky | Personalizirano s ljubavlju</title>
+    <meta name="theme-color" content="#0b0b0a">
+    <link rel="icon" type="image/png" href="images/logo-mark.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo" aria-label="Laky & Maky – početna">
+            <img src="images/logo-mark.png" alt="">
+            <div><b>LAKY <span>&</span> MAKY</b><small>PERSONALIZIRANO S LJUBAVLJU</small></div>
+        </a>
+        <button id="menuBtn" class="menu" aria-label="Otvori izbornik">☰</button>
+        <nav id="nav">
+            <a href="index.html">Početna</a>
+            <a href="katalog.html">Katalog</a>
+            <a href="index.html#about">O nama</a>
+            <a href="index.html#contact">Kontakt</a>
+            <button id="cartBtn" class="cart-btn">Košarica <span id="cartCount">0</span></button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-inner">
+                <p class="eyebrow">KREATIVNO • PO MJERI • S PAŽNJOM</p>
+                <h1>Pokloni koji pričaju <em>vašu priču.</em></h1>
+                <p>Personalizirani detalji, 3D printani proizvodi i dekoracije za trenutke koje želite pamtiti.</p>
+                <a class="btn gold" href="katalog.html">Istraži katalog ↗</a>
+            </div>
+            <div class="hero-art">
+                <img src="images/logo-mark.png" alt="Laky & Maky logo – 3D printer">
+                <p>RUČNO OSMIŠLJENO. POSEBNO ZA VAS.</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div>✧ <p class="ft"><strong>Personalizacija</strong><span>Svaki detalj po vašoj želji</span></p></div>
+            <div>◇ <p class="ft"><strong>Kreativna izrada</strong><span>Originalni pokloni i dekoracije</span></p></div>
+            <div>♡ <p class="ft"><strong>S pažnjom</strong><span>Od ideje do gotovog proizvoda</span></p></div>
+        </section>
+
+        <section class="section catalog-preview">
+            <div class="section-heading">
+                <p class="eyebrow">NAŠA PONUDA</p>
+                <h2>Pronađite nešto posebno.</h2>
+                <p>Personalizirani pokloni, dekoracije i 3D printani proizvodi izrađeni s pažnjom.</p>
+            </div>
+            <div id="featuredProducts" class="products" aria-label="Izdvojeni proizvodi"></div>
+            <div class="featured-more"><a class="btn gold" href="katalog.html">Pogledaj cijeli katalog ↗</a></div>
+        </section>
+
+        <section id="about" class="about">
+            <div>
+                <p class="eyebrow">NAŠA PRIČA</p>
+                <h2>Male ideje. Velike uspomene.</h2>
+                <p>Laky & Maky je kreativni obrt posvećen personaliziranim proizvodima, 3D printu, dekoracijama i dizajnu. Vjerujemo da najljepši pokloni nose osobnu poruku.</p>
+                <a href="#contact" class="btn outline">Kontaktirajte nas</a>
+            </div>
+            <div class="about-quote">"Posebno nije ono što je skupo, već ono što je stvoreno baš za nekoga."</div>
+        </section>
+
+        <section id="contact" class="section contact">
+            <p class="eyebrow">TU SMO ZA VAS</p>
+            <h2>Imate posebnu ideju?</h2>
+            <p>Javite nam se i zajedno ćemo osmisliti nešto jedinstveno.</p>
+            <a class="btn gold" href="mailto:lakymaky0311@gmail.com">Pošalji e-mail ↗</a>
+            <p class="muted">lakymaky0311@gmail.com</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="logo"><img src="images/logo-mark.png" alt=""><div><b>LAKY <span>&</span> MAKY</b></div></div>
+        <p>Personalizirani proizvodi • 3D print • Dekoracije</p>
+        <small>© <span id="year"></span> Laky & Maky. Sva prava sadržana.</small>
+    </footer>
+
+    <div id="overlay" class="overlay hidden"></div>
+    <aside id="drawer" class="drawer hidden" aria-label="Košarica">
+        <div class="drawer-head"><h2>Vaša košarica</h2><button id="closeCart" aria-label="Zatvori">✕</button></div>
+        <div id="cartItems"></div>
+        <div class="total">Ukupno: <strong id="total">0,00 €</strong></div>
+
+        <form id="orderForm">
+            <h3>Podaci za narudžbu</h3>
+            <label>Način preuzimanja
+                <select name="delivery" id="delivery">
+                    <option>Dogovor</option>
+                    <option>Slanje dostavom</option>
+                    <option>Osobno preuzimanje</option>
+                </select>
+            </label>
+            <div class="row2">
+                <label>Ime *<input name="firstName" required maxlength="50" autocomplete="given-name"></label>
+                <label>Prezime *<input name="lastName" required maxlength="50" autocomplete="family-name"></label>
+            </div>
+            <label>E-mail *<input name="email" type="email" required maxlength="100" autocomplete="email"></label>
+            <label><span id="phoneLabel">Telefon</span>
+                <input name="phone" id="phone" type="tel" maxlength="20" pattern="[0-9+ ()/\-]{6,20}" title="Unesite ispravan broj mobitela, npr. 091 234 5678" autocomplete="tel">
+            </label>
+            <fieldset id="shipFields" class="ship hidden" disabled>
+                <legend>Adresa za dostavu</legend>
+                <div class="row2 street">
+                    <label>Ulica *<input name="street" required maxlength="100" autocomplete="address-line1"></label>
+                    <label>Kućni broj *<input name="houseNumber" required maxlength="10"></label>
+                </div>
+                <div class="row2 city">
+                    <label>Poštanski broj *<input name="postalCode" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" title="Poštanski broj ima 5 znamenki" autocomplete="postal-code"></label>
+                    <label>Grad *<input name="city" required maxlength="60" autocomplete="address-level2"></label>
+                </div>
+            </fieldset>
+            <label>Napomene i personalizacija
+                <textarea name="note" rows="3" placeholder="Ime, boje, željeni tekst, posebne upute..."></textarea>
+            </label>
+            <label class="consent"><input type="checkbox" required>Pristajem na obradu podataka radi odgovora na upit za narudžbu. *</label>
+            <button class="btn gold full" type="submit">Pošalji upit za narudžbu</button>
+            <p id="formStatus" role="status"></p>
+            <small>Upit nije obvezujuća kupnja. Cijenu i rok izrade potvrđujemo naknadno.</small>
+        </form>
+    </aside>
+
+    <!-- Prozor za odabir boje proizvoda -->
+    <div id="colorModal" class="color-modal hidden">
+        <div class="color-modal-content" role="dialog" aria-modal="true" aria-labelledby="colorModalTitle">
+            <button type="button" id="closeColorModal" class="color-modal-close" aria-label="Zatvori">×</button>
+            <p class="eyebrow">PERSONALIZACIJA</p>
+            <h2 id="colorModalTitle">Odaberite boju</h2>
+            <p id="colorProductName" class="color-product-name"></p>
+            <div id="colorOptions" class="color-options" role="group" aria-label="Dostupne boje"></div>
+            <p id="selectedColorLabel" class="selected-color-label">Odabrana boja: <strong>Nije odabrana</strong></p>
+            <p>Boje uživo mogu se razlikovati od ovdje prikazanih boja!</p>
+            <p id="colorError" class="color-error" role="alert"></p>
+            <button type="button" id="confirmColor" class="btn gold full">Dodaj u košaricu</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

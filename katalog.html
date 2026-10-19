@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="hr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Katalog personaliziranih poklona, 3D printa i dekoracija Laky & Maky.">
+    <title>Katalog proizvoda | Laky & Maky</title>
+    <meta name="theme-color" content="#0b0b0a">
+    <link rel="icon" type="image/png" href="images/logo-mark.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo" aria-label="Laky & Maky – početna">
+            <img src="images/logo-mark.png" alt="">
+            <div><b>LAKY <span>&</span> MAKY</b><small>PERSONALIZIRANO S LJUBAVLJU</small></div>
+        </a>
+        <button id="menuBtn" class="menu" aria-label="Otvori izbornik">☰</button>
+        <nav id="nav">
+            <a href="index.html">Početna</a>
+            <a href="katalog.html" aria-current="page">Katalog</a>
+            <a href="index.html#about">O nama</a>
+            <a href="index.html#contact">Kontakt</a>
+            <button id="cartBtn" class="cart-btn">Košarica <span id="cartCount">0</span></button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="catalog-banner">
+            <p class="eyebrow">LAKY & MAKY</p>
+            <h1>Naš katalog proizvoda</h1>
+            <p>Odaberite nešto posebno ili nam se javite za izradu po želji.</p>
+        </div>
+        <section id="catalog" class="section">
+            <div class="section-heading">
+                <p class="eyebrow">NAŠA PONUDA</p>
+                <h2>Otkrijte nešto posebno.</h2>
+                <p>Odaberite kategoriju ili pronađite proizvod koji vam se sviđa.</p>
+            </div>
+            <div class="filters">
+                <input id="search" type="search" placeholder="Pretraži proizvode..." aria-label="Pretraži proizvode">
+                <select id="category" aria-label="Kategorija"><option value="">Sve kategorije</option></select>
+            </div>
+            <div id="products" class="products"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="logo"><img src="images/logo-mark.png" alt=""><div><b>LAKY <span>&</span> MAKY</b></div></div>
+        <p>Personalizirani proizvodi • 3D print • Dekoracije</p>
+        <small>© <span id="year"></span> Laky & Maky. Sva prava pridržana.</small>
+        <p class="legal">Prije objave dopuniti: podaci o obrtu, uvjeti naručivanja, privatnost i dostava.</p>
+    </footer>
+
+    <div id="overlay" class="overlay hidden"></div>
+    <aside id="drawer" class="drawer hidden" aria-label="Košarica">
+        <div class="drawer-head"><h2>Vaša košarica</h2><button id="closeCart" aria-label="Zatvori">✕</button></div>
+        <div id="cartItems"></div>
+        <div class="total">Ukupno: <strong id="total">0,00 €</strong></div>
+
+        <form id="orderForm">
+            <h3>Podaci za narudžbu</h3>
+            <label>Način preuzimanja
+                <select name="delivery" id="delivery">
+                    <option>Dogovor</option>
+                    <option>Slanje dostavom</option>
+                    <option>Osobno preuzimanje</option>
+                </select>
+            </label>
+            <div class="row2">
+                <label>Ime *<input name="firstName" required maxlength="50" autocomplete="given-name"></label>
+                <label>Prezime *<input name="lastName" required maxlength="50" autocomplete="family-name"></label>
+            </div>
+            <label>E-mail *<input name="email" type="email" required maxlength="100" autocomplete="email"></label>
+            <label><span id="phoneLabel">Telefon</span>
+                <input name="phone" id="phone" type="tel" maxlength="20" pattern="[0-9+ ()/\-]{6,20}" title="Unesite ispravan broj mobitela, npr. 091 234 5678" autocomplete="tel">
+            </label>
+            <fieldset id="shipFields" class="ship hidden" disabled>
+                <legend>Adresa za dostavu</legend>
+                <div class="row2 street">
+                    <label>Ulica *<input name="street" required maxlength="100" autocomplete="address-line1"></label>
+                    <label>Kućni broj *<input name="houseNumber" required maxlength="10"></label>
+                </div>
+                <div class="row2 city">
+                    <label>Poštanski broj *<input name="postalCode" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" title="Poštanski broj ima 5 znamenki" autocomplete="postal-code"></label>
+                    <label>Grad *<input name="city" required maxlength="60" autocomplete="address-level2"></label>
+                </div>
+            </fieldset>
+            <label>Napomene i personalizacija
+                <textarea name="note" rows="3" placeholder="Ime, boje, željeni tekst, posebne upute..."></textarea>
+            </label>
+            <label class="consent"><input type="checkbox" required>Pristajem na obradu podataka radi odgovora na upit za narudžbu. *</label>
+            <button class="btn gold full" type="submit">Pošalji upit za narudžbu</button>
+            <p id="formStatus" role="status"></p>
+            <small>Upit nije obvezujuća kupnja. Cijenu i rok izrade potvrđujemo naknadno.</small>
+        </form>
+    </aside>
+
+    <!-- Prozor za odabir boje proizvoda -->
+    <div id="colorModal" class="color-modal hidden">
+        <div class="color-modal-content" role="dialog" aria-modal="true" aria-labelledby="colorModalTitle">
+            <button type="button" id="closeColorModal" class="color-modal-close" aria-label="Zatvori">×</button>
+            <p class="eyebrow">PERSONALIZACIJA</p>
+            <h2 id="colorModalTitle">Odaberite boju</h2>
+            <p id="colorProductName" class="color-product-name"></p>
+            <div id="colorOptions" class="color-options" role="group" aria-label="Dostupne boje"></div>
+            <p id="selectedColorLabel" class="selected-color-label">Odabrana boja: <strong>Nije odabrana</strong></p>
+            <p>Boje uživo mogu se razlikovati od ovdje prikazanih boja!</p>
+            <p id="colorError" class="color-error" role="alert"></p>
+            <button type="button" id="confirmColor" class="btn gold full">Dodaj u košaricu</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

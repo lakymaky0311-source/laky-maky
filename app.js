@@ -5,8 +5,8 @@
    ========================================= */
 
 const DEFAULT_PRODUCTS = [
-    { id: 'p1', name: 'Personalizirani 3D privjesak', category: 'Božićni program', price: 5.5, description: 'Privjesak s imenom ili tekstom po želji.', image: 'images/1.jpg' },
-    { id: 'p2', name: 'Dekorativni flowerbox', category: 'Božićni program', price: 25, description: 'Cvjetni aranžman u odabranoj kombinaciji boja.', image: 'images/2.jpg' },
+    { id: 'p1', name: 'Božićni anđeli - 3D ukras za drvce', category: 'Božićni program', price: 1, description: 'Božićni anđeo - prodaja po komadu.', image: 'images/1.jpg' },
+    { id: 'p2', name: 'Božićni kolačići za drvce', category: 'Božićni program', price: 5, description: 'Set od pet ukrasa.', image: 'images/2.jpg' },
     { id: 'p3', name: 'Topper za tortu', category: 'Božićni program', price: 9, description: 'Personalizirani topper za posebne prigode.', image: 'images/3.jpg' },
     { id: 'p4', name: 'Božićni ukras s imenom', category: 'Božićni program', price: 6, description: 'Jedinstveni ukras s osobnom porukom.', image: 'images/4.jpg' },
     { id: 'p5', name: 'Spomen pločica', category: 'Božićni program', price: 12, description: 'Pločica s citatom ili posvetom.', image: 'images/5.jpg' },

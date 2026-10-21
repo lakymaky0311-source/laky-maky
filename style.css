@@ -191,3 +191,117 @@ footer .legal{font-size:10px;color:#6c675c;margin-top:18px}
   .color-swatch{width:34px;height:34px}
   .color-option-name{font-size:10px}
 }
+
+/* ===== MOBILNI DIZAJN: centriranje i poravnanje ===== */
+@media(max-width:850px){
+  /* Hero */
+  .hero-inner{max-width:100%;margin:0 auto;padding:60px 6% 20px;text-align:center}
+  .hero-inner>p:not(.eyebrow){margin-left:auto;margin-right:auto}
+  .hero-inner .eyebrow,
+  .about .eyebrow{justify-content:center;font-size:10px;letter-spacing:3px}
+  .hero-inner .eyebrow::after,
+  .about .eyebrow::after{content:"";width:34px;height:1px;background:var(--gold)}
+  .hero h1{margin:20px 0}
+
+  /* Gumbi u sredini i jednake širine */
+  .hero-inner .btn,
+  .about .btn,
+  .featured-more .btn,
+  .contact .btn{
+    display:block;
+    width:100%;
+    max-width:340px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  /* Značajke (Personalizacija...) */
+  .features div{justify-content:center;text-align:center;flex-direction:column;gap:10px}
+  .features .ft{text-align:center}
+
+  /* O nama */
+  .about{text-align:center}
+  .about-quote{
+    padding:26px 0 0;
+    border-left:0;
+    border-top:2px solid var(--gold);
+    text-align:center;
+  }
+
+  /* Naslovi sekcija i kontakt */
+  .section-heading,.contact{text-align:center}
+}
+
+@media(max-width:540px){
+  /* Kartice proizvoda: sve centrirano, gumb preko cijele širine */
+  .product-info{text-align:center}
+  .product-bottom{
+    flex-direction:column;
+    justify-content:center;
+    align-items:stretch;
+    gap:14px;
+    text-align:center;
+  }
+  .product-bottom button{width:100%;padding:14px 16px}
+
+  /* Hero slika */
+  .hero-art{min-height:300px}
+
+  /* Košarica: gumbi i polja preko cijele širine */
+  .drawer .btn.gold{width:100%}
+  .header{padding:0 4%}
+}
+
+/* Vrlo uski ekrani */
+@media(max-width:380px){
+  .logo{font-size:15px;letter-spacing:2px}
+  .logo img{height:32px}
+  .hero h1{font-size:38px}
+  .btn{padding:15px 20px}
+}
+
+/* ===== POPRAVAK HERO SEKCIJE NA MOBITELU ===== */
+@media(max-width:850px){
+  .hero{
+    min-height:0;
+    display:block;
+  }
+  .hero-inner{
+    padding:50px 6% 10px;
+  }
+
+  /* Gumb: normalna visina, bez preklapanja */
+  .hero-inner .btn{
+    padding:16px 20px;
+    margin-top:12px;
+    line-height:1.3;
+  }
+
+  /* Eyebrow: bez linija sa strane, tekst u sredini */
+  .hero-inner .eyebrow{
+    display:block;
+    text-align:center;
+    line-height:1.8;
+  }
+  .hero-inner .eyebrow::before,
+  .hero-inner .eyebrow::after{
+    display:none;
+  }
+
+  /* Slika ispod teksta, s razmakom */
+  .hero-art{
+    position:relative;
+    min-height:340px;
+    margin-top:30px;
+    padding-bottom:30px;
+  }
+  .hero-art img{
+    width:min(200px,50%);
+  }
+  .hero-art p{
+    margin-top:36px;
+    text-align:center;
+    padding:0 20px;
+    line-height:1.8;
+  }
+}

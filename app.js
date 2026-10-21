@@ -428,7 +428,7 @@ on('#delivery', 'change', syncDelivery);
 on('#orderForm', 'reset', () => setTimeout(syncDelivery, 0));
 
 /* =========================================
-   9. SLANJE UPITA ZA NARUDŽBU
+   9. SLANJE UPITA ZA NARUDŽBU (Web3Forms)
    ========================================= */
 
 on('#orderForm', 'submit', async (event) => {
@@ -443,66 +443,75 @@ on('#orderForm', 'submit', async (event) => {
         return;
     }
 
+    const accessKey = window.LAKY_CONFIG?.web3formsKey;
+    if (!accessKey) {
+        status.textContent = 'Slanje trenutno nije dostupno. Molimo pišite nam na lakymaky0311@gmail.com.';
+        return;
+    }
+
     const formData = Object.fromEntries(new FormData(form));
-    formData.name = `${formData.firstName} ${formData.lastName}`.trim();
-    formData.address = formData.delivery === 'Slanje dostavom'
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+    const shipping = formData.delivery === 'Slanje dostavom';
+    const address = shipping
         ? `${formData.street} ${formData.houseNumber}, ${formData.postalCode} ${formData.city}`
-        : '';
+        : '-';
 
-    const payload = {
-        customer: formData,
-        items: cart.map(({ id, name, price, qty, color }) => ({
-            id, name, price, qty, color
-        })),
-        total: cart.reduce((sum, item) => sum + item.price * item.qty, 0)
-    };
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-    button.disabled = true;
-    status.textContent = 'Pripremamo upit...';
+    const itemsText = cart.map((item) =>
+        `• ${item.name}\n   Boja: ${item.color || 'Nije odabrana'} | Količina: ${item.qty} | Cijena: ${money(item.price * item.qty)}`
+    ).join('\n');
 
-    try {
-        const endpoint = window.LAKY_CONFIG?.orderEndpoint;
-
-        if (endpoint) {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) throw new Error('Poslužitelj nije prihvatio narudžbu.');
-
-            status.textContent = 'Upit je uspješno poslan!';
-            cart = [];
-            renderCart();
-            form.reset();
-        } else {
-            const itemsText = payload.items.map((item) =>
-                `${item.name} | Boja: ${item.color || 'Nije odabrana'} | Količina: ${item.qty} | Cijena: ${money(item.price * item.qty)}`
-            ).join('\n');
-
-            const body = `
-Novi upit za narudžbu
+    const message = `
+NOVI UPIT ZA NARUDŽBU
 
 ${itemsText}
 
-Ukupno: ${money(payload.total)}
+UKUPNO: ${money(total)}
 
-Ime: ${formData.name}
+KUPAC
+Ime i prezime: ${fullName}
 E-mail: ${formData.email}
-Telefon: ${formData.phone || ''}
+Telefon: ${formData.phone || '-'}
 Preuzimanje: ${formData.delivery}
-Adresa: ${formData.address}
-Napomene: ${formData.note || ''}
-            `.trim();
+Adresa: ${address}
 
-            const subject = encodeURIComponent('Upit za narudžbu – Laky & Maky');
-            const encodedBody = encodeURIComponent(body);
-            const mailtoUrl = `mailto:lakymaky0311@gmail.com?subject=${subject}&body=${encodedBody}`;
+NAPOMENE I PERSONALIZACIJA
+${formData.note || '-'}
+    `.trim();
 
-            status.textContent = 'Otvoren je vaš e-mail program. Potvrdite slanje poruke kako bi upit stigao.';
-            window.location.href = mailtoUrl;
+    button.disabled = true;
+    status.textContent = 'Šaljemo upit...';
+
+    try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                access_key: accessKey,
+                subject: `Nova narudžba – ${fullName}`,
+                from_name: 'Laky & Maky web',
+                name: fullName,
+                email: formData.email,
+                replyto: formData.email,
+                message,
+                botcheck: ''
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || 'Slanje nije uspjelo.');
         }
+
+        cart = [];
+        renderCart();
+        form.reset();
+        status.textContent = 'Hvala! Vaš upit je poslan. Javit ćemo vam se uskoro.';
     } catch (error) {
         status.textContent = 'Slanje nije uspjelo. Pokušajte ponovno ili nam pišite izravno na e-mail.';
     } finally {

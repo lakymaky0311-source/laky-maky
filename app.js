@@ -7,7 +7,7 @@
 const DEFAULT_PRODUCTS = [
     { id: 'p1', name: 'Božićni anđeli - 3D ukras za drvce', category: 'Božićni program', price: 1, description: 'Božićni anđeo - prodaja po komadu.', image: 'images/1.jpg' },
     { id: 'p2', name: 'Božićni kolačići za drvce', category: 'Božićni program', price: 5, description: 'Set od pet ukrasa.', image: 'images/2.jpg' },
-    { id: 'p3', name: 'Topper za tortu', category: 'Božićni program', price: 9, description: 'Personalizirani topper za posebne prigode.', image: 'images/3.jpg' },
+    { id: 'p3', name: 'Kuglica s motivom jelena', category: 'Božićni program', price: 1.50, description: 'Kuglica s motivom jelena', image: 'images/3.jpg' },
     { id: 'p4', name: 'Držači salveta pribora za jelo', category: 'Božićni program', price: 3, description: 'Set od 6 držača salveta pribora za jelo.', image: 'images/4.jpg' },
     { id: 'p5', name: 'Stitch kugla', category: 'Božićni program', price: 2, description: 'Popularni Stitch u obliku kuglice za bor.', image: 'images/5.jpg' },
     { id: 'p6', name: 'Mini pahuljice za drvce - prodaja po komadu', category: 'Božićni program', price: 0.50, description: 'Mini pahuljice za božićno drvce. Moguća prodaja u obliku seta.', image: 'images/6.jpg' },
@@ -18,7 +18,7 @@ const DEFAULT_PRODUCTS = [
     { id: 'p11', name: 'Moderna kuglica za drvce', category: 'Božićni program', price: 1, description: 'Prigodna dekoracija za vaš dom.', image: 'images/11.jpg' },
     { id: 'p12', name: 'Božićni Ginger Bread', category: 'Božićni program', price: 1, description: 'Prigodna dekoracija za vaš dom.', image: 'images/12.jpg' },
     { id: 'p13', name: 'Božićne kuglice s raznim motivima - prodaja po komadu', category: 'Božićni program', price: 0.70, description: 'Prigodna dekoracija za vaš dom.', image: 'images/13.jpg' },
-    { id: 'p14', name: 'UBožićna kuglica s motivom jelena', category: 'Božićni program', price: 2, description: 'Prigodna dekoracija za vaš dom.', image: 'images/14.jpg' },
+    { id: 'p14', name: 'Božićni jelen za bor', category: 'Božićni program', price: 2, description: 'Prigodna dekoracija za vaš dom.', image: 'images/14.jpg' },
     { id: 'p15', name: 'Božićni borić s zvijezdom', category: 'Božićni program', price: 4.50, description: 'Prigodna dekoracija za vaš dom.', image: 'images/15.jpg' },
     { id: 'p16', name: 'Božićni borić s zvijezdom', category: 'Božićni program', price: 4.50, description: 'Prigodna dekoracija za vaš dom.', image: 'images/16.jpg' },
     { id: 'p17', name: 'Božićni borić s lučicom', category: 'Božićni program', price: 3, description: 'Prigodna dekoracija za vaš dom.', image: 'images/17.jpg' },

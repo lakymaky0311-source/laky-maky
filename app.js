@@ -12,7 +12,7 @@ const DEFAULT_PRODUCTS = [
     { id: 'p5', name: 'Stitch kugla', category: 'Božićni program', price: 2, description: 'Popularni Stitch u obliku kuglice za bor.', image: 'images/5.jpg' },
     { id: 'p6', name: 'Mini pahuljice za drvce - prodaja po komadu', category: 'Božićni program', price: 0.50, description: 'Mini pahuljice za božićno drvce. Moguća prodaja u obliku seta.', image: 'images/6.jpg' },
     { id: 'p7', name: 'Kuglica sa Djedom Božićnjakom', category: 'Božićni program', price: 1, description: 'Prigodna dekoracija za vaš dom.', image: 'images/7.jpg' },
-    { id: 'p8', name: 'Kuglica sa saonicama', category: 'Božićni program', price: 1, description: 'Prigodna dekoracija za vaš dom.', image: 'images/8.jpg' },
+    { id: 'p8', name: 'Kuglica sa saonicama', category: 'Božićni program', price: 1.50, description: 'Prigodna dekoracija za vaš dom.', image: 'images/8.jpg' },
     { id: 'p9', name: 'Personalizirane kuglice s imenima', category: 'Božićni program s imenom', price: 1.50, description: 'Prigodna dekoracija za vaš dom.', image: 'images/9.jpg' },
     { id: 'p10', name: 'Božićna kuglica s mačkom', category: 'Božićni program', price: 1, description: 'Prigodna dekoracija za vaš dom.', image: 'images/10.jpg' },
     { id: 'p11', name: 'Moderna kuglica za drvce', category: 'Božićni program', price: 1, description: 'Prigodna dekoracija za vaš dom.', image: 'images/11.jpg' },

@@ -1,3 +1,2 @@
-// Upišite URL objavljene serverske funkcije za primanje narudžbi.
-// Bez nje aplikacija otvara e-mail program kupca (rezervna opcija).
-window.LAKY_CONFIG = { orderEndpoint: '' };
+// Javni pristupni ključ za Web3Forms (služi za slanje narudžbi na e-mail).
+window.LAKY_CONFIG = { web3formsKey: '239ccdcd-a6fe-49a5-ae89-358efc5681ba' };

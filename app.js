@@ -77,10 +77,6 @@ const safe = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => (
 
 const getColor = (name) => AVAILABLE_COLORS.find((color) => color.name === name);
 
-/* =========================================
-   3. INICIJALIZACIJA I SPREMANJE KOŠARICE
-   ========================================= */
-
 const products = DEFAULT_PRODUCTS;
 let cart = [];
 let selectedProductForColor = null;
@@ -417,19 +413,82 @@ function syncDelivery() {
 
     if (!delivery || !shippingFields || !phone || !phoneLabel) return;
 
-    const shipping = delivery.value === 'Slanje dostavom';
+    const shipping = delivery.value === 'Dostava na adresu (besplatno do 20 km)';
     shippingFields.classList.toggle('hidden', !shipping);
     shippingFields.disabled = !shipping;
     phone.required = shipping;
     phoneLabel.textContent = shipping ? 'Broj mobitela *' : 'Telefon';
 }
 
-on('#delivery', 'change', syncDelivery);
-on('#orderForm', 'reset', () => setTimeout(syncDelivery, 0));
-
 /* =========================================
-   9. SLANJE UPITA ZA NARUDŽBU (Web3Forms)
+   9. SLANJE UPITA ZA NARUDŽBU (Web3Forms + EmailJS)
    ========================================= */
+
+const SHIPPING_OPTION = 'Dostava na adresu (besplatno do 20 km)';
+
+
+async function sendCustomerConfirmation(data) {
+    const cfg = window.LAKY_CONFIG || {};
+
+    console.log('[EmailJS] Funkcija je pokrenuta.');
+    console.log('[EmailJS] Konfiguracija postoji:', {
+        serviceId: Boolean(cfg.emailjsServiceId),
+        templateId: Boolean(cfg.emailjsTemplateId),
+        publicKey: Boolean(cfg.emailjsPublicKey)
+    });
+
+    if (
+        !cfg.emailjsServiceId ||
+        !cfg.emailjsTemplateId ||
+        !cfg.emailjsPublicKey
+    ) {
+        console.error('[EmailJS] Nedostaje konfiguracija.');
+        return false;
+    }
+
+    try {
+        const response = await fetch(
+            'https://api.emailjs.com/api/v1.0/email/send',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    service_id: cfg.emailjsServiceId,
+                    template_id: cfg.emailjsTemplateId,
+                    user_id: cfg.emailjsPublicKey,
+                    template_params: {
+                        to_name: data.name,
+                        to_email: data.email,
+                        order_details: data.items,
+                        total: data.total,
+                        delivery: data.delivery,
+                        address: data.address,
+                        note: data.note
+                    }
+                })
+            }
+        );
+
+        const responseText = await response.text();
+
+        console.log('[EmailJS] HTTP status:', response.status);
+        console.log('[EmailJS] Odgovor servera:', responseText);
+
+        if (!response.ok) {
+            return false;
+        }
+
+        console.log('[EmailJS] Zahtjev je uspješno prihvaćen.');
+        return true;
+
+    } catch (error) {
+        console.error('[EmailJS] Greška pri slanju:', error);
+        return false;
+    }
+}
+
 
 on('#orderForm', 'submit', async (event) => {
     event.preventDefault();
@@ -451,7 +510,7 @@ on('#orderForm', 'submit', async (event) => {
 
     const formData = Object.fromEntries(new FormData(form));
     const fullName = `${formData.firstName} ${formData.lastName}`.trim();
-    const shipping = formData.delivery === 'Slanje dostavom';
+    const shipping = formData.delivery === SHIPPING_OPTION;
     const address = shipping
         ? `${formData.street} ${formData.houseNumber}, ${formData.postalCode} ${formData.city}`
         : '-';
@@ -508,16 +567,218 @@ ${formData.note || '-'}
             throw new Error(result.message || 'Slanje nije uspjelo.');
         }
 
+        const confirmed = await sendCustomerConfirmation({
+            name: fullName,
+            email: formData.email,
+            items: itemsText,
+            total: money(total),
+            delivery: formData.delivery,
+            address,
+            note: formData.note || '-'
+        });
+
         cart = [];
         renderCart();
         form.reset();
-        status.textContent = 'Hvala! Vaš upit je poslan. Javit ćemo vam se uskoro.';
+        status.textContent = confirmed
+            ? 'Hvala! Vaš upit je poslan. Potvrdu primitka poslali smo vam na e-mail (provjerite i neželjenu poštu).'
+            : 'Hvala! Vaš upit je poslan. Javit ćemo vam se uskoro.';
     } catch (error) {
         status.textContent = 'Slanje nije uspjelo. Pokušajte ponovno ili nam pišite izravno na e-mail.';
     } finally {
         button.disabled = false;
     }
 });
+
+
+/* =========================================
+   9b. GALERIJA RADOVA
+   ========================================= */
+
+// Ovdje dodaj/ukloni slike. 'title' je opis koji se vidi u povećanom prikazu.
+const WORKS = [
+    { src: 'images/1.jpg', title: 'Personalizirani ukras' },
+    { src: 'images/2.jpg', title: 'Božićni ukrasi' },
+    { src: 'images/3.jpg', title: '3D printani proizvod' },
+    { src: 'images/4.jpg', title: 'Dekoracija' },
+    { src: 'images/5.jpg', title: 'Personalizirani poklon' },
+    { src: 'images/6.jpg', title: 'Naš rad' }
+];
+
+let lightboxList = [];
+let lightboxIndex = 0;
+
+function galleryItems(list) {
+    return list.map((work, index) => `
+        <button type="button" class="gallery-item" data-work="${index}" aria-label="Povećaj sliku: ${safe(work.title)}">
+            <img src="${safe(work.src)}" alt="${safe(work.title)}" loading="lazy">
+        </button>
+    `).join('');
+}
+
+function ensureLightbox() {
+    if ($('#lightbox')) return;
+
+    const box = document.createElement('div');
+    box.id = 'lightbox';
+    box.className = 'lightbox hidden';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.innerHTML = `
+        <button type="button" class="lb-close" aria-label="Zatvori">×</button>
+        <button type="button" class="lb-nav lb-prev" aria-label="Prethodna slika">‹</button>
+        <figure>
+            <img src="" alt="">
+            <figcaption></figcaption>
+        </figure>
+        <button type="button" class="lb-nav lb-next" aria-label="Sljedeća slika">›</button>
+    `;
+    document.body.appendChild(box);
+
+    box.addEventListener('click', (event) => {
+        if (event.target === box || event.target.closest('.lb-close')) closeLightbox();
+        else if (event.target.closest('.lb-prev')) stepLightbox(-1);
+        else if (event.target.closest('.lb-next')) stepLightbox(1);
+    });
+
+    let touchStartX = 0;
+    box.addEventListener('touchstart', (event) => {
+        touchStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    box.addEventListener('touchend', (event) => {
+        const diff = event.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(diff) > 50) stepLightbox(diff > 0 ? -1 : 1);
+    }, { passive: true });
+}
+
+function showLightboxImage() {
+    const work = lightboxList[lightboxIndex];
+    const box = $('#lightbox');
+    if (!work || !box) return;
+
+    const image = box.querySelector('img');
+    image.src = work.src;
+    image.alt = work.title;
+    box.querySelector('figcaption').textContent = `${work.title}  (${lightboxIndex + 1}/${lightboxList.length})`;
+}
+
+function openLightbox(list, index) {
+    ensureLightbox();
+    lightboxList = list;
+    lightboxIndex = index;
+    showLightboxImage();
+    $('#lightbox').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    $('#lightbox')?.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+function stepLightbox(change) {
+    if (!lightboxList.length) return;
+    lightboxIndex = (lightboxIndex + change + lightboxList.length) % lightboxList.length;
+    showLightboxImage();
+}
+
+document.addEventListener('keydown', (event) => {
+    const box = $('#lightbox');
+    if (!box || box.classList.contains('hidden')) return;
+    if (event.key === 'Escape') closeLightbox();
+    if (event.key === 'ArrowLeft') stepLightbox(-1);
+    if (event.key === 'ArrowRight') stepLightbox(1);
+});
+
+function initGallery() {
+    const targets = [
+        { selector: '#worksGallery', list: WORKS }
+    ];
+
+    targets.forEach(({ selector, list }) => {
+        const container = $(selector);
+        if (!container) return;
+
+        container.innerHTML = galleryItems(list);
+        container.addEventListener('click', (event) => {
+            const item = event.target.closest('[data-work]');
+            if (item) openLightbox(list, Number(item.dataset.work));
+        });
+    });
+}
+
+function initSlider() {
+    const slider = $('#worksSlider');
+    const track = $('#sliderTrack');
+    const dots = $('#sliderDots');
+    if (!slider || !track || !dots || !WORKS.length) return;
+
+    let current = 0;
+    let timer = null;
+
+    track.innerHTML = WORKS.map((work, index) => `
+        <div class="slide">
+            <button type="button" class="slide-btn" data-slide="${index}" aria-label="Povećaj sliku: ${safe(work.title)}">
+                <img src="${safe(work.src)}" alt="${safe(work.title)}" ${index === 0 ? '' : 'loading="lazy"'}>
+            </button>
+        </div>
+    `).join('');
+
+    dots.innerHTML = WORKS.map((work, index) =>
+        `<button type="button" data-dot="${index}" aria-label="Slika ${index + 1}"></button>`
+    ).join('');
+
+    function go(index) {
+        current = (index + WORKS.length) % WORKS.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.querySelectorAll('button').forEach((dot, n) => {
+            dot.classList.toggle('active', n === current);
+        });
+    }
+
+    function stop() {
+        clearInterval(timer);
+        timer = null;
+    }
+
+    function start() {
+        stop();
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        timer = setInterval(() => go(current + 1), 4500);
+    }
+
+    slider.querySelector('.slider-prev').addEventListener('click', () => { go(current - 1); start(); });
+    slider.querySelector('.slider-next').addEventListener('click', () => { go(current + 1); start(); });
+
+    dots.addEventListener('click', (event) => {
+        const dot = event.target.closest('[data-dot]');
+        if (dot) { go(Number(dot.dataset.dot)); start(); }
+    });
+
+    track.addEventListener('click', (event) => {
+        const slide = event.target.closest('[data-slide]');
+        if (slide) openLightbox(WORKS, Number(slide.dataset.slide));
+    });
+
+    // Pauza kad je miš iznad slidera
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+
+    // Listanje prstom
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', (event) => {
+        touchStartX = event.changedTouches[0].clientX;
+        stop();
+    }, { passive: true });
+    slider.addEventListener('touchend', (event) => {
+        const diff = event.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(diff) > 40) go(diff > 0 ? current - 1 : current + 1);
+        start();
+    }, { passive: true });
+
+    go(0);
+    start();
+}
 
 /* =========================================
    10. POKRETANJE APLIKACIJE
@@ -526,4 +787,6 @@ ${formData.note || '-'}
 initCatalog();
 initFeaturedProducts();
 renderCart();
+initGallery(); 
 syncDelivery();
+initSlider();

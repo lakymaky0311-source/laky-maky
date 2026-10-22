@@ -19,6 +19,7 @@
         <nav id="nav">
             <a href="index.html">Početna</a>
             <a href="katalog.html">Katalog</a>
+            <a href="radovi.html">Naši radovi</a>
             <a href="index.html#about">O nama</a>
             <a href="index.html#contact">Kontakt</a>
             <button id="cartBtn" class="cart-btn">Košarica <span id="cartCount">0</span></button>
@@ -55,6 +56,21 @@
             <div class="featured-more"><a class="btn gold" href="katalog.html">Pogledaj cijeli katalog ↗</a></div>
         </section>
 
+        <section id="radovi" class="section works-preview">
+            <div class="section-heading">
+                <p class="eyebrow">NAŠI RADOVI</p>
+                <h2>Što smo dosad izradili.</h2>
+                <p>Pogledajte dio naših dosadašnjih radova i personaliziranih proizvoda.</p>
+            </div>
+            <div id="worksSlider" class="slider" aria-roledescription="carousel" aria-label="Naši radovi">
+                <div id="sliderTrack" class="slider-track"></div>
+                <button type="button" class="slider-btn slider-prev" aria-label="Prethodna slika">‹</button>
+                <button type="button" class="slider-btn slider-next" aria-label="Sljedeća slika">›</button>
+                <div id="sliderDots" class="slider-dots"></div>
+            </div>
+            <div class="featured-more"><a class="btn gold" href="radovi.html">Svi naši radovi ↗</a></div>
+        </section>
+
         <section id="about" class="about">
             <div>
                 <p class="eyebrow">NAŠA PRIČA</p>
@@ -65,6 +81,52 @@
             <div class="about-quote">"Posebno nije ono što je skupo, već ono što je stvoreno baš za nekoga."</div>
         </section>
 
+        <section id="faq" class="section faq">
+    <div class="section-heading">
+        <p class="eyebrow">PITANJA I ODGOVORI</p>
+        <h2>Često postavljana pitanja.</h2>
+        <p>Ako ovdje ne nađete odgovor, slobodno nam se javite.</p>
+    </div>
+    <div class="faq-list">
+        <details>
+            <summary>Kako mogu naručiti?</summary>
+            <p>Dodajte proizvode u košaricu, odaberite boju i pošaljite upit za narudžbu. Javit ćemo vam se e-mailom s potvrdom cijene i roka izrade. Upit nije obvezujuć, a plaćate tek nakon naše potvrde.</p>
+        </details>
+        <details>
+            <summary>Koliko traje izrada?</summary>
+            <p>Obično [3–7] radnih dana, ovisno o količini i složenosti. Pred blagdane je više narudžbi, pa preporučujemo da naručite na vrijeme. Točan rok potvrđujemo uz svaku narudžbu.</p>
+        </details>
+        <details>
+            <summary>Mogu li ukras personalizirati imenom ili tekstom?</summary>
+            <p>Da. Željeno ime ili tekst upišite u polje "Napomene i personalizacija" prilikom slanja upita. Ako imate posebnu ideju, pišite nam i zajedno ćemo je osmisliti.</p>
+        </details>
+        <details>
+            <summary>Koje boje su dostupne?</summary>
+            <p>Pri dodavanju u košaricu birate jednu od ponuđenih boja. Boje uživo mogu se malo razlikovati od onih na ekranu.</p>
+        </details>
+        <details>
+            <summary>Od čega su ukrasi izrađeni?</summary>
+            <p>Proizvodi se izrađuju 3D printom od [PLA plastike / napišite svoj materijal]. [Dodajte napomenu o održavanju, npr. da nisu za perilicu posuđa.]</p>
+        </details>
+        <details>
+            <summary>Kako se dostavlja i koliko košta dostava?</summary>
+            <p>Moguće je osobno preuzimanje ([mjesto]) ili slanje dostavom ([kurirska služba, cijena]). Način preuzimanja birate u košarici, a detalje dogovaramo nakon upita.</p>
+        </details>
+        <details>
+            <summary>Kako se plaća?</summary>
+            <p>[Uplatom na račun / pouzećem / gotovinom pri preuzimanju. Prilagodite.] Podatke za plaćanje šaljemo nakon potvrde narudžbe.</p>
+        </details>
+        <details>
+            <summary>Mogu li vratiti proizvod?</summary>
+            <p>Personalizirani proizvodi izrađeni po vašoj želji ne mogu se vratiti, osim ako su oštećeni ili ne odgovaraju dogovorenom. Sve detalje pročitajte u <a href="privatnost.html#uvjeti">uvjetima kupnje</a>.</p>
+        </details>
+        <details>
+            <summary>Radite li veće narudžbe i poklone za tvrtke?</summary>
+            <p>Da, izrađujemo veće količine i poklone s imenima ili logotipom. Javite nam se na <a href="mailto:lakymaky0311@gmail.com">lakymaky0311@gmail.com</a> za ponudu.</p>
+        </details>
+    </div>
+</section>
+
         <section id="contact" class="section contact">
             <p class="eyebrow">TU SMO ZA VAS</p>
             <h2>Imate posebnu ideju?</h2>
@@ -74,11 +136,39 @@
         </section>
     </main>
 
-    <footer>
-        <div class="logo"><img src="images/logo-mark.png" alt=""><div><b>LAKY <span>&</span> MAKY</b></div></div>
-        <p>Personalizirani proizvodi • 3D print • Dekoracije</p>
-        <small>© <span id="year"></span>Laky & Maky. Sva prava pridržana.</small>
-    </footer>
+<footer>
+    <div class="logo"><img src="images/logo-mark.png" alt=""><div><b>LAKY <span>&</span> MAKY</b></div></div>
+    <p>Personalizirani proizvodi • 3D print • Dekoracije</p>
+
+    <div class="footer-info">
+        <div>
+            <h4>Obrt</h4>
+            <p>Laky & Maky, obrt za usluge<br>vl. Luka Mihalić<br>OIB: 34046148588<br>MBO: 99130645</p>
+        </div>
+        <div>
+            <h4>Adresa</h4>
+            <p>Banjščina 344b<br>Varaždin Breg<br>42204 Turčin</p>
+        </div>
+        <div>
+            <h4>Kontakt</h4>
+            <p>
+                <a href="mailto:lakymaky0311@gmail.com">lakymaky0311@gmail.com</a><br>
+                <a href="tel:+385998267095">099 826 7095</a><br>
+                <a href="https://wa.me/385998267095" target="_blank" rel="noopener">WhatsApp</a>
+            </p>
+        </div>
+        <div>
+            <h4>Informacije</h4>
+            <p>
+                <a href="privatnost.html#uvjeti">Uvjeti kupnje</a><br>
+                <a href="privatnost.html#privatnost">Politika privatnosti</a><br>
+                <a href="index.html#faq">Česta pitanja</a>
+            </p>
+        </div>
+    </div>
+
+    <small>© <span id="year"></span> Laky & Maky. Sva prava pridržana.</small>
+</footer>
 
     <div id="overlay" class="overlay hidden"></div>
     <aside id="drawer" class="drawer hidden" aria-label="Košarica">
@@ -89,11 +179,11 @@
         <form id="orderForm">
             <h3>Podaci za narudžbu</h3>
             <label>Način preuzimanja
-                <select name="delivery" id="delivery">
-                    <option>Dogovor</option>
-                    <option>Slanje dostavom</option>
-                    <option>Osobno preuzimanje</option>
-                </select>
+<select name="delivery" id="delivery">
+    <option>Osobno preuzimanje (Varaždin Breg)</option>
+    <option>Dostava na adresu (besplatno do 20 km)</option>
+    <option>BOX NOW paketomat</option>
+</select>
             </label>
             <div class="row2">
                 <label>Ime *<input name="firstName" required maxlength="50" autocomplete="given-name"></label>
@@ -138,6 +228,11 @@
             <button type="button" id="confirmColor" class="btn gold full">Dodaj u košaricu</button>
         </div>
     </div>
+
+    <a href="https://wa.me/385998267095?text=Pozdrav%2C%20zanima%20me%20va%C5%A1a%20ponuda."
+    class="wa-float" target="_blank" rel="noopener" aria-label="Pišite nam na WhatsApp">
+    <span class="wa-icon" aria-hidden="true">💬</span><span class="wa-text">WhatsApp</span>
+    </a>
 
     <script src="config.js"></script>
     <script src="app.js"></script>

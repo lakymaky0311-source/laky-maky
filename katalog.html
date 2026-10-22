@@ -19,6 +19,7 @@
         <nav id="nav">
             <a href="index.html">Početna</a>
             <a href="katalog.html" aria-current="page">Katalog</a>
+            <a href="radovi.html">Naši radovi</a>
             <a href="index.html#about">O nama</a>
             <a href="index.html#contact">Kontakt</a>
             <button id="cartBtn" class="cart-btn">Košarica <span id="cartCount">0</span></button>
@@ -45,11 +46,39 @@
         </section>
     </main>
 
-    <footer>
-        <div class="logo"><img src="images/logo-mark.png" alt=""><div><b>LAKY <span>&</span> MAKY</b></div></div>
-        <p>Personalizirani proizvodi • 3D print • Dekoracije</p>
-        <small>© <span id="year"></span> Laky & Maky. Sva prava pridržana.</small>
-    </footer>
+<footer>
+    <div class="logo"><img src="images/logo-mark.png" alt=""><div><b>LAKY <span>&</span> MAKY</b></div></div>
+    <p>Personalizirani proizvodi • 3D print • Dekoracije</p>
+
+    <div class="footer-info">
+        <div>
+            <h4>Obrt</h4>
+            <p>Laky & Maky, obrt za usluge<br>vl. Luka Mihalić<br>OIB: 34046148588<br>MBO: 99130645</p>
+        </div>
+        <div>
+            <h4>Adresa</h4>
+            <p>Banjščina 344b<br>Varaždin Breg<br>42204 Turčin</p>
+        </div>
+        <div>
+            <h4>Kontakt</h4>
+            <p>
+                <a href="mailto:lakymaky0311@gmail.com">lakymaky0311@gmail.com</a><br>
+                <a href="tel:+385998267095">099 826 7095</a><br>
+                <a href="https://wa.me/385998267095" target="_blank" rel="noopener">WhatsApp</a>
+            </p>
+        </div>
+        <div>
+            <h4>Informacije</h4>
+            <p>
+                <a href="privatnost.html#uvjeti">Uvjeti kupnje</a><br>
+                <a href="privatnost.html#privatnost">Politika privatnosti</a><br>
+                <a href="index.html#faq">Česta pitanja</a>
+            </p>
+        </div>
+    </div>
+
+    <small>© <span id="year"></span> Laky & Maky. Sva prava pridržana.</small>
+</footer>
 
     <div id="overlay" class="overlay hidden"></div>
     <aside id="drawer" class="drawer hidden" aria-label="Košarica">
@@ -60,11 +89,11 @@
         <form id="orderForm">
             <h3>Podaci za narudžbu</h3>
             <label>Način preuzimanja
-                <select name="delivery" id="delivery">
-                    <option>Dogovor</option>
-                    <option>Slanje dostavom</option>
-                    <option>Osobno preuzimanje</option>
-                </select>
+        <select name="delivery" id="delivery">
+            <option>Osobno preuzimanje (Varaždin Breg)</option>
+            <option>Dostava na adresu (besplatno do 20 km)</option>
+            <option>BOX NOW paketomat</option>
+        </select>
             </label>
             <div class="row2">
                 <label>Ime *<input name="firstName" required maxlength="50" autocomplete="given-name"></label>

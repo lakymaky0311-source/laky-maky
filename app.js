@@ -405,27 +405,40 @@ if (yearElement) yearElement.textContent = new Date().getFullYear();
    8. DOSTAVA
    ========================================= */
 
+const SHIPPING_OPTION = 'Dostava na adresu (besplatno do 20 km)';
+const BOXNOW_OPTION = 'BOX NOW paketomat';
+
 function syncDelivery() {
     const delivery = $('#delivery');
     const shippingFields = $('#shipFields');
+    const boxFields = $('#boxFields');
     const phone = $('#phone');
     const phoneLabel = $('#phoneLabel');
 
     if (!delivery || !shippingFields || !phone || !phoneLabel) return;
 
-    const shipping = delivery.value === 'Dostava na adresu (besplatno do 20 km)';
+    const shipping = delivery.value === SHIPPING_OPTION;
+    const boxnow = delivery.value === BOXNOW_OPTION;
+
     shippingFields.classList.toggle('hidden', !shipping);
     shippingFields.disabled = !shipping;
-    phone.required = shipping;
-    phoneLabel.textContent = shipping ? 'Broj mobitela *' : 'Telefon';
+
+    if (boxFields) {
+        boxFields.classList.toggle('hidden', !boxnow);
+        boxFields.disabled = !boxnow;
+    }
+
+    // Za dostavu i BOX NOW mobitel je obavezan (obavijest o pošiljci)
+    phone.required = shipping || boxnow;
+    phoneLabel.textContent = (shipping || boxnow) ? 'Broj mobitela *' : 'Telefon';
 }
+
+on('#delivery', 'change', syncDelivery);
+on('#orderForm', 'reset', () => setTimeout(syncDelivery, 0));
 
 /* =========================================
    9. SLANJE UPITA ZA NARUDŽBU (Web3Forms + EmailJS)
    ========================================= */
-
-const SHIPPING_OPTION = 'Dostava na adresu (besplatno do 20 km)';
-
 
 async function sendCustomerConfirmation(data) {
     const cfg = window.LAKY_CONFIG || {};
@@ -461,7 +474,7 @@ async function sendCustomerConfirmation(data) {
                     template_params: {
                         to_name: data.name,
                         to_email: data.email,
-                        order_details: data.items,
+                        order_details: safe(data.items).replace(/\n/g, '<br>'),
                         total: data.total,
                         delivery: data.delivery,
                         address: data.address,
@@ -511,9 +524,12 @@ on('#orderForm', 'submit', async (event) => {
     const formData = Object.fromEntries(new FormData(form));
     const fullName = `${formData.firstName} ${formData.lastName}`.trim();
     const shipping = formData.delivery === SHIPPING_OPTION;
+    const boxnow = formData.delivery === BOXNOW_OPTION;
     const address = shipping
         ? `${formData.street} ${formData.houseNumber}, ${formData.postalCode} ${formData.city}`
-        : '-';
+        : boxnow
+            ? `BOX NOW paketomat: ${formData.boxnowLocker}`
+            : '-';
 
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
@@ -596,14 +612,10 @@ ${formData.note || '-'}
    ========================================= */
 
 // Ovdje dodaj/ukloni slike. 'title' je opis koji se vidi u povećanom prikazu.
-const WORKS = [
-    { src: 'images/1.jpg', title: 'Personalizirani ukras' },
-    { src: 'images/2.jpg', title: 'Božićni ukrasi' },
-    { src: 'images/3.jpg', title: '3D printani proizvod' },
-    { src: 'images/4.jpg', title: 'Dekoracija' },
-    { src: 'images/5.jpg', title: 'Personalizirani poklon' },
-    { src: 'images/6.jpg', title: 'Naš rad' }
-];
+const WORKS = Array.from({ length: 52 }, (_, i) => ({
+    src: `radovi/${i + 1}.jpg`,
+    title: 'Personalizirani 3D print'
+}));
 
 let lightboxList = [];
 let lightboxIndex = 0;
@@ -711,12 +723,17 @@ function initSlider() {
     const slider = $('#worksSlider');
     const track = $('#sliderTrack');
     const dots = $('#sliderDots');
-    if (!slider || !track || !dots || !WORKS.length) return;
+    if (!slider || !track || !dots) return;
+
+    // Na početnoj prikazujemo samo prvih 10 slika (promijeni broj po želji)
+    // Upiši brojeve slika koje želiš na početnoj (1 = radovi/1.jpg, 52 = radovi/52.jpg)
+    const SLIDES = [47, 46, 43, 41, 38, 21, 5, 4].map((n) => WORKS[n - 1]);
+    if (!SLIDES.length) return;
 
     let current = 0;
     let timer = null;
 
-    track.innerHTML = WORKS.map((work, index) => `
+    track.innerHTML = SLIDES.map((work, index) => `
         <div class="slide">
             <button type="button" class="slide-btn" data-slide="${index}" aria-label="Povećaj sliku: ${safe(work.title)}">
                 <img src="${safe(work.src)}" alt="${safe(work.title)}" ${index === 0 ? '' : 'loading="lazy"'}>
@@ -724,12 +741,12 @@ function initSlider() {
         </div>
     `).join('');
 
-    dots.innerHTML = WORKS.map((work, index) =>
+    dots.innerHTML = SLIDES.map((work, index) =>
         `<button type="button" data-dot="${index}" aria-label="Slika ${index + 1}"></button>`
     ).join('');
 
     function go(index) {
-        current = (index + WORKS.length) % WORKS.length;
+        current = (index + SLIDES.length) % SLIDES.length;
         track.style.transform = `translateX(-${current * 100}%)`;
         dots.querySelectorAll('button').forEach((dot, n) => {
             dot.classList.toggle('active', n === current);
@@ -757,7 +774,7 @@ function initSlider() {
 
     track.addEventListener('click', (event) => {
         const slide = event.target.closest('[data-slide]');
-        if (slide) openLightbox(WORKS, Number(slide.dataset.slide));
+        if (slide) openLightbox(SLIDES, Number(slide.dataset.slide));
     });
 
     // Pauza kad je miš iznad slidera
